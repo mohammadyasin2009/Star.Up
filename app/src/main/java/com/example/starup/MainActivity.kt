@@ -18277,6 +18277,7 @@ fun Cometmanshae(){
                         .fillMaxSize()
                 ) {
                     Box(modifier = Modifier.fillMaxSize())
+
                     {
                         LazyColumn(
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -18502,4 +18503,5 @@ fun Cometmanshae(){
 @Composable
 fun GreetingPreview() {
     SecandScreen()
+    //fhgvdfvjhdfvhbfvjbdvbfdv
 }
