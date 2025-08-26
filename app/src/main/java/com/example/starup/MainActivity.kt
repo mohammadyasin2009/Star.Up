@@ -614,6 +614,19 @@ class MainActivity : ComponentActivity() {
                         }
                         Box(modifier = Modifier.fillMaxSize()) {
                             AnimatedVisibility(
+                                visible = currentScreen == "comemanshae",
+                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
+                                    animationSpec = tween(
+                                        400,
+                                        easing = FastOutSlowInEasing)
+                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Cometmanshae()
+                            }
+                        }
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            AnimatedVisibility(
                                 visible = currentScreen == "search",
                                 enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
                                     animationSpec = tween(
@@ -3614,7 +3627,7 @@ fun TenthScrean() {
                                         }
                                         if (letter == "منشأ دنباله‌دارها") {
                                             backap = false
-                                            currentScreen = "astroidmadari"
+                                            currentScreen = "comemanshae"
                                         }
                                         if (letter == "دنباله‌دار معروف") {
                                             backap = false
@@ -4353,7 +4366,7 @@ fun SearchEwiew(){
                                                 }
                                                 if (letter == "منشأ دنباله‌دارها") {
                                                     backap = false
-                                                    currentScreen = "astroidmadari"
+                                                    currentScreen = "comemanshae"
                                                 }
                                                 if (letter == "دنباله‌دارهای معروف") {
                                                     backap = false
@@ -16936,7 +16949,7 @@ fun Comekotah(){
                                                                 }
                                                                 if (matnha == "منشأ دنباله دارها") {
                                                                     backap = false
-                                                                    currentScreen = "astroidfiziki"
+                                                                    currentScreen = "comemanshae"
                                                                 }
                                                                 if (matnha == "دنباله دار معروف") {
                                                                     backap = false
@@ -17292,7 +17305,7 @@ fun Comeboland(){
                                                                 }
                                                                 if (matnha == "منشأ دنباله دارها") {
                                                                     backap = false
-                                                                    currentScreen = "astroidfiziki"
+                                                                    currentScreen = "comemanshae"
                                                                 }
                                                                 if (matnha == "دنباله دار معروف") {
                                                                     backap = false
@@ -17650,7 +17663,7 @@ fun Cometakgozar(){
                                                                 }
                                                                 if (matnha == "منشأ دنباله دارها") {
                                                                     backap = false
-                                                                    currentScreen = "astroidfiziki"
+                                                                    currentScreen = "comemanshae"
                                                                 }
                                                                 if (matnha == "دنباله دار معروف") {
                                                                     backap = false
@@ -17906,7 +17919,7 @@ fun Cometsakhtar(){
                         LazyColumn(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            items(textDonbaleDareTakGozar) { letter ->
+                            items(textSakhtarDonbaleDarha) { letter ->
                                 Column(modifier = Modifier.padding(30.dp)) {
                                     Row {
                                         Image(painter = painterResource(id = R.drawable.cometzodgozar)
@@ -18012,7 +18025,369 @@ fun Cometsakhtar(){
                                                                 }
                                                                 if (matnha == "منشأ دنباله دارها") {
                                                                     backap = false
+                                                                    currentScreen = "comemanshae"
+                                                                }
+                                                                if (matnha == "دنباله دار معروف") {
+                                                                    backap = false
+                                                                    currentScreen = "astroidmanshaedar"
+                                                                }
+                                                                if (matnha == "دنباله دار میانی") {
+                                                                    backap = false
+                                                                    currentScreen = "astroidmadari"
+                                                                }
+                                                                if (matnha == "چرخه حیات دنباله دار") {
+                                                                    backap = false
+                                                                    currentScreen = "astroidbazalati"
+                                                                }
+                                                                if (matnha == "تأثیر دنباله دار بر زمین") {
+                                                                    backap = false
                                                                     currentScreen = "astroidfiziki"
+                                                                }
+                                                                if (matnha == "مقایسه دنباله دارها") {
+                                                                    backap = false
+                                                                    currentScreen = "astroidmanshaedar"
+                                                                }
+                                                            }, colors = ButtonDefaults.buttonColors(
+                                                                contentColor = Color.Transparent,
+                                                                containerColor = Color.Transparent
+                                                            )) {
+                                                        }
+                                                        Row() {
+                                                            Spacer(modifier = Modifier.width(10.dp))
+                                                            Column {
+                                                                Spacer(modifier = Modifier.height(9.dp))
+                                                                Text(
+                                                                    "$matnha",
+                                                                    color = Color.White,
+                                                                    fontSize = 20.sp
+                                                                    , style = TextStyle(
+                                                                        shadow = Shadow(
+                                                                            color = Color(0xFFFFFFFF),
+                                                                            offset = Offset(0f ,0f)
+                                                                            , blurRadius = 20f
+                                                                        )
+                                                                    )
+                                                                )
+                                                            }
+                                                            Spacer(modifier = Modifier.width(15.dp))
+                                                            Image(
+                                                                painter = aksha,
+                                                                contentDescription = null,
+                                                                contentScale = ContentScale.Crop,
+                                                                modifier = Modifier.size(50.dp)
+                                                            )
+                                                            Spacer(modifier = Modifier.width(15.dp))
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        Text("")
+                                        Text("")
+                                        Text("")
+                                    }
+                                }
+                            }
+                        }
+                        var count by remember { mutableStateOf(0) }
+                        IconButton(
+                            onClick = { count++ },
+                            modifier = Modifier
+                                .size(70.dp)
+                                .align(Alignment.BottomEnd)
+                                .indication(indication = null ,
+                                    interactionSource = remember { MutableInteractionSource() }),
+                            colors = IconButtonDefaults.iconButtonColors(
+                                containerColor = Color(0xFF030A33)
+                            )
+                        ) {
+                            if (count % 2 == 0) {
+                                Icon(
+                                    imageVector = Icons.Default.Favorite,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(50.dp),
+                                    tint = Color.Transparent
+                                )
+                                Icon(
+                                    imageVector = Icons.Default.FavoriteBorder,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(50.dp),
+                                    tint = Color.White
+                                )
+                            }
+                            if (count % 2 == 1) {
+                                Icon(
+                                    imageVector = Icons.Default.Favorite,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(50.dp),
+                                    tint = Color.White
+                                )
+                                Icon(
+                                    imageVector = Icons.Default.FavoriteBorder,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(50.dp),
+                                    tint = Color.White
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@Composable
+fun Cometmanshae(){
+    when(currentScreen) {
+        "comemanshae" -> {
+            Image(painter = painterResource(id = R.drawable.app_back)
+                , contentScale = ContentScale.Crop , contentDescription = null)
+            Column {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.5.dp),
+                    shape = RectangleShape,
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF030A33))
+                ) {
+                }
+                Column(){
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        shape = RectangleShape,
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF0707AD))
+                    ) {
+                        Row(modifier = Modifier.padding(10.dp)) {
+                            IconButton(onClick = {currentScreen = "asli4"
+                                backap = true
+                            } , colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
+                                , modifier = Modifier.indication(indication = null ,
+                                    interactionSource = remember { MutableInteractionSource() })){
+                                Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null , modifier = Modifier.size(40.dp))
+                            }
+                            IconButton(
+                                onClick = {},
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                                modifier = Modifier.indication(indication = null ,
+                                    interactionSource = remember { MutableInteractionSource() })
+                            ) {
+                                Icon(imageVector = Icons.Default.Info, contentDescription = null)
+                            }
+                            IconButton(
+                                onClick = {},
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                                modifier = Modifier.indication(indication = null ,
+                                    interactionSource = remember { MutableInteractionSource() })
+                            ) {
+                                Icon(imageVector = Icons.Default.Share, contentDescription = null)
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text("منشأ دنباله دارها", fontSize = 25.sp, color = Color.White)
+                                IconButton(onClick = {expanded = true},
+                                    modifier = Modifier.size(50.dp)
+                                        .indication(indication = null ,
+                                            interactionSource = remember { MutableInteractionSource() }),
+                                    colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)) {
+                                    Icon(imageVector = Icons.Default.Menu, contentDescription = null)
+                                }
+                            }
+                        }
+                    }
+                }
+                var textManshaDonbaleDarha = listOf(
+                    ": معرفی کلی\n" +
+                            "\n" +
+                            "منشأ دنباله‌دارها به دوران آغازین شکل‌گیری منظومهٔ شمسی بازمی‌گردد. این اجرام بقایای یخی و غبارآلودی هستند که از دیسک اولیهٔ خورشیدی به‌جا مانده‌اند. " +
+                            "دو ناحیهٔ اصلی به‌عنوان خاستگاه دنباله‌دارها شناخته می‌شوند: کمربند کویی‌پر و ابر اورت. " +
+                            "دنباله‌دارهای کوتاه‌مدت عمدتاً از کمربند کویی‌پر و دیسک پراکنده منشا می‌گیرند، در حالی‌که دنباله‌دارهای بلندمدت و تک‌گذر از ابر اورت سرچشمه می‌گیرند. " +
+                            "بررسی منشأ دنباله‌دارها کلید فهم پویایی منظومهٔ شمسی و تاریخچهٔ مواد آلی و آب در زمین به شمار می‌رود\u202b." +
+                            "\n" +
+                            "\n" +
+                            "\n" +
+                            ": چارچوب‌های رده‌بندی و دسته‌بندی\n" +
+                            "\n" +
+                            "بر اساس ناحیهٔ منشأ: کمربند کویی‌پر (منشأ دنباله‌دارهای کوتاه‌مدت)، دیسک پراکنده، و ابر اورت (منشأ دنباله‌دارهای بلندمدت و تک‌گذر). " +
+                            "بر اساس اثرات گرانشی: رانده‌شدن اجرام به مدارهای درونی تحت تأثیر سیارات غول‌پیکر به‌ویژه مشتری و نپتون. " +
+                            "بر اساس دینامیک مداری: مدارهای پایدار در کمربند کویی‌پر در برابر مدارهای ناپایدار ابر اورت. " +
+                            "بر اساس ترکیب: منشأهای متفاوت می‌توانند ترکیبات یخی و نسبت‌های ایزوتوپی متمایز ایجاد کنند. " +
+                            "بر اساس تاریخچه: دنباله‌دارهایی که بارها به درون منظومه وارد شده‌اند در برابر اجرامی که تنها یک بار (تک‌گذر) به درون می‌آیند\u202b." +
+                            "\n" +
+                            "\n" +
+                            "\n" +
+                            ": اصول و مبانی نظری کلیدی\n" +
+                            "\n" +
+                            "کمربند کویی‌پر: ناحیه‌ای پس از نپتون شامل میلیون‌ها جرم یخی که منبع اصلی دنباله‌دارهای کوتاه‌مدت است. " +
+                            "دیسک پراکنده: منطقه‌ای با اجرام دارای مدارهای کشیده و متمایل که منشأ بخشی از دنباله‌دارها محسوب می‌شود. " +
+                            "ابر اورت: پوسته‌ای کروی‌شکل در فاصلهٔ ده‌ها هزار واحد نجومی از خورشید که مخزن عظیم دنباله‌دارهای بلندمدت و تک‌گذر است. " +
+                            "تأثیر گرانش سیارات: برهم‌کنش با مشتری و نپتون اجرام را به سمت منظومهٔ درونی هدایت می‌کند. " +
+                            "تأثیر ستارگان گذری و کشش کهکشانی: در بازه‌های زمانی طولانی می‌توانند اجرام ابر اورت را به مدارهای جدید برانند\u202b." +
+                            "\n" +
+                            "\n" +
+                            "\n" +
+                            ": کاربردها و پیش‌بینی‌ها\n" +
+                            "\n" +
+                            "شناخت شرایط اولیهٔ شکل‌گیری منظومهٔ شمسی از طریق منشأ دنباله‌دارها. " +
+                            "بررسی احتمال انتقال آب و ترکیبات آلی از مناطق بیرونی به زمین اولیه. " +
+                            "پیش‌بینی ورود دنباله‌دارهای جدید از ابر اورت بر اساس مدل‌های دینامیکی. " +
+                            "ارزیابی نقش سیارات غول‌پیکر در تعیین پویایی اجرام یخی. " +
+                            "مدل‌سازی آیندهٔ منظومهٔ شمسی و نرخ ورود دنباله‌دارها به نواحی درونی\u202b." +
+                            "\n" +
+                            "\n" +
+                            "\n" +
+                            ": نقش در علم و فناوری\n" +
+                            "\n" +
+                            "الهام برای طراحی شبیه‌سازی‌های دینامیکی گسترده از منشأ و تکامل اجرام کوچک. " +
+                            "کاربرد داده‌های رصدی در توسعهٔ مدل‌های منشأ آب زمین. " +
+                            "بهبود فناوری تلسکوپ‌ها و کاوشگرها برای کشف اجرام دوردست کمربند کویی‌پر و ابر اورت. " +
+                            "تقویت همکاری بین‌المللی در پروژه‌های علمی مانند پان‌استارز و ورا روبین برای کشف دنباله‌دارهای تازه. " +
+                            "گسترش دانش بشر دربارهٔ نقش برهم‌کنش‌های کهکشانی در پویایی منظومهٔ شمسی\u202b." +
+                            "\n" +
+                            "\n" +
+                            "\n" +
+                            ": بخش نظری برجسته\n" +
+                            "\n" +
+                            "نظریهٔ ابر اورت: ارائه‌شده توسط یان اورت در سال ۱۹۵۰ به‌عنوان منشأ دنباله‌دارهای بلندمدت. " +
+                            "کشف کمربند کویی‌پر: اثبات‌شده در دههٔ ۱۹۹۰ که منشأ دنباله‌دارهای کوتاه‌مدت را آشکار کرد. " +
+                            "مدل نایس: مدلی از مهاجرت سیارات غول‌پیکر که توزیع اجرام یخی را توضیح می‌دهد. " +
+                            "دنباله‌دار هیل باپ و نظریهٔ منشأ ابر اورت: یکی از شواهد آشکار برای وجود مخزن عظیم اجرام دوردست. " +
+                            "مطالعات ایزوتوپی آب در دنباله‌دار ۶۷پی: نشان‌دهندهٔ تفاوت در منشأ آب میان کمربند کویی‌پر و زمین\u202b."
+                )
+                val textmortabet = listOf("دنباله دار کوتاه دوره", "دنباله دار بلند دوره", "دنباله دار تک گذر", "ساختار دنباله دارها", "دنباله دار معروف", "دنباله دار میانی" , "چرخه حیات دنباله دار", "تأثیر دنباله دار بر زمین" , "مقایسه دنباله دارها")
+                val imagemortabet = listOf(
+                    painterResource(R.drawable.cometkotahdore),
+                    painterResource(R.drawable.cometbolanddore),
+                    painterResource(R.drawable.cometzodgozar),
+                    painterResource(R.drawable.cometsakhtar),
+                    painterResource(R.drawable.cometfamus),
+                    painterResource(R.drawable.comemiansetaree),
+                    painterResource(R.drawable.comecharkhehayat),
+                    painterResource(R.drawable.cometaethirbarzamin),
+                    painterResource(R.drawable.cometmoghayese),
+                )
+                val tarkib = textmortabet.zip(imagemortabet)
+                Column(
+                    modifier = Modifier
+                        .padding(25.dp)
+                        .fillMaxSize()
+                ) {
+                    Box(modifier = Modifier.fillMaxSize())
+                    {
+                        LazyColumn(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            items(textManshaDonbaleDarha) { letter ->
+                                Column(modifier = Modifier.padding(30.dp)) {
+                                    Row {
+                                        Image(painter = painterResource(id = R.drawable.cometmanshae)
+                                            , contentDescription = null , contentScale = ContentScale.Crop
+                                            , modifier = Modifier.size(100.dp))
+                                        Column {
+                                            Text("")
+                                            Row(modifier = Modifier.fillMaxWidth()
+                                                ,horizontalArrangement = Arrangement.End
+                                                , verticalAlignment = Alignment.CenterVertically) {
+                                                Text("منشأ دنباله دارها" , fontSize = 20.sp  , color = Color.White , style = TextStyle(
+                                                    shadow = Shadow(
+                                                        color = Color(0xFFFFFFFF),
+                                                        offset = Offset(0f ,0f)
+                                                        , blurRadius = 20f
+                                                    )
+                                                ), maxLines = 1)
+                                            }
+                                        }
+                                    }
+                                }
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.CenterStart,
+                                ) {
+                                    Column {
+                                        Text(
+                                            "$letter",
+                                            fontSize = 20.sp,
+                                            color = Color(0xFFFFFFFF),
+                                            lineHeight = 32.sp,
+                                            textAlign = TextAlign.Right
+                                            , style = TextStyle(
+                                                shadow = Shadow(
+                                                    color = Color(0xFFFFFFFF),
+                                                    offset = Offset(0f ,0f)
+                                                    , blurRadius = 20f
+                                                )
+                                            )
+                                        )
+                                        Text("")
+                                        Text("")
+                                        Text("")
+                                        Text(
+                                            "موضوعات مرتبط",
+                                            textAlign = TextAlign.Right,
+                                            modifier = Modifier.fillMaxWidth(),
+                                            fontSize = 30.sp,
+                                            color = Color.White
+                                            , style = TextStyle(
+                                                shadow = Shadow(
+                                                    color = Color(0xFFFFFFFF),
+                                                    offset = Offset(0f ,0f)
+                                                    , blurRadius = 20f
+                                                )
+                                            )
+                                        )
+                                        Text("")
+                                        LazyRow(reverseLayout = true) {
+                                            items(tarkib) { (matnha, aksha) ->
+                                                Card(
+                                                    modifier = Modifier
+                                                        .width(250.dp)
+                                                        .height(120.dp)
+                                                        .padding(20.dp)
+                                                        .clip(shape = RoundedCornerShape(100.dp)),
+                                                    shape = RectangleShape,
+                                                    colors = CardDefaults.cardColors(
+                                                        containerColor = Color(
+                                                            0xFF0707AD
+                                                        )
+                                                    )
+                                                ) {
+                                                    Box(
+                                                        modifier = Modifier.fillMaxSize(),
+                                                        contentAlignment = Alignment.CenterEnd
+                                                    ) {
+                                                        Image(
+                                                            painter = painterResource(id = R.drawable.card),
+                                                            contentScale = ContentScale.Crop,
+                                                            contentDescription = null,
+                                                            modifier = Modifier.fillMaxSize()
+                                                        )
+                                                        Button(
+                                                            modifier = Modifier.fillMaxSize(
+                                                            ).indication(indication = null ,
+                                                                interactionSource = remember { MutableInteractionSource() }), onClick = {
+                                                                if (matnha == "دنباله دار کوتاه دوره") {
+                                                                    backap = false
+                                                                    currentScreen = "comekotah"
+                                                                }
+                                                                if (matnha == "دنباله دار بلند دوره") {
+                                                                    currentScreen = "comeboland"
+                                                                    backap = false
+                                                                }
+                                                                if (matnha == "دنباله دار تک گذر") {
+                                                                    backap = false
+                                                                    currentScreen = "cometakgozar"
+                                                                }
+                                                                if (matnha == "ساختار دنباله دارها") {
+                                                                    currentScreen = "comesakhtar"
+                                                                    backap = false
+                                                                }
+                                                                if (matnha == "منشأ دنباله دارها") {
+                                                                    backap = false
+                                                                    currentScreen = "comemanshae"
                                                                 }
                                                                 if (matnha == "دنباله دار معروف") {
                                                                     backap = false
@@ -18127,7 +18502,4 @@ fun Cometsakhtar(){
 @Composable
 fun GreetingPreview() {
     SecandScreen()
-    //fun GreetingPreview() {
-    //    SecandScreen()
-    //}
 }
