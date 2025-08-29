@@ -17987,7 +17987,7 @@ fun Cometsakhtar(){
                             items(textSakhtarDonbaleDarha) { letter ->
                                 Column(modifier = Modifier.padding(30.dp)) {
                                     Row {
-                                        Image(painter = painterResource(id = R.drawable.cometzodgozar)
+                                        Image(painter = painterResource(id = R.drawable.cometsakhtar)
                                             , contentDescription = null , contentScale = ContentScale.Crop
                                             , modifier = Modifier.size(100.dp))
                                         Column {
@@ -17995,7 +17995,7 @@ fun Cometsakhtar(){
                                             Row(modifier = Modifier.fillMaxWidth()
                                                 ,horizontalArrangement = Arrangement.End
                                                 , verticalAlignment = Alignment.CenterVertically) {
-                                                Text("دنباله دار تک گذر" , fontSize = 20.sp  , color = Color.White , style = TextStyle(
+                                                Text("ساختار دنباله دارها" , fontSize = 20.sp  , color = Color.White , style = TextStyle(
                                                     shadow = Shadow(
                                                         color = Color(0xFFFFFFFF),
                                                         offset = Offset(0f ,0f)
@@ -19769,7 +19769,7 @@ fun Comettaethir(){
                             "نمونهٔ برجسته: دنباله‌دار شوماخر-لوی ۹ که در ۱۹۹۴ با مشتری برخورد کرد و نشان داد چنین برخوردهایی در منظومهٔ شمسی رایج و پرانرژی‌اند. " +
                             "نقش در آینده: ردیابی و شناسایی دنباله‌دارهای نزدیک‌گذر برای پیشگیری از خطرات احتمالی برخورد با زمین\u202b."
                 )
-                val textmortabet = listOf("دنباله دار بلند دوره", "دنباله دار تک گذر", "ساختار دنباله دارها", "منشأ دنباله دارها", "دنباله دار معروف", "دنباله دار میانی" , "چرخه دنباله دار", "تأثیر دنباله دار" , "مقایسه دنباله دارها")
+                val textmortabet = listOf("دنباله دار کوتاه دوره", "دنباله دار بلند دوره", "دنباله دار تک گذر", "ساختار دنباله دارها", "منشأ دنباله دارها", "دنباله دار معروف" , "دنباله دار میانی", "چرخه دنباله دار" , "مقایسه دنباله دارها")
                 val imagemortabet = listOf(
                     painterResource(R.drawable.cometkotahdore),
                     painterResource(R.drawable.cometbolanddore),
@@ -19778,7 +19778,7 @@ fun Comettaethir(){
                     painterResource(R.drawable.cometmanshae),
                     painterResource(R.drawable.cometfamus),
                     painterResource(R.drawable.comemiansetaree),
-                    painterResource(R.drawable.cometaethirbarzamin),
+                    painterResource(R.drawable.comecharkhehayat),
                     painterResource(R.drawable.cometmoghayese),
                 )
                 val tarkib = textmortabet.zip(imagemortabet)
@@ -20132,7 +20132,7 @@ fun Cometmoghayese(){
                             "دنباله‌دار آیسون: که در سال ۲۰۱۳ نابود شد و نشان داد برخی دنباله‌دارها در نخستین گذر نزدیک به خورشید از بین می‌روند. " +
                             "دنباله‌دار میان‌ستاره‌ای ۲ای بوریسوف: نمونه‌ای نادر که نشان می‌دهد مقایسه‌ها باید فراتر از منظومهٔ شمسی نیز گسترش یابد\u202b."
                 )
-                val textmortabet = listOf("دنباله دار بلند دوره", "دنباله دار تک گذر", "ساختار دنباله دارها", "منشأ دنباله دارها", "دنباله دار معروف", "دنباله دار میانی" , "چرخه دنباله دار", "تأثیر دنباله دار" , "مقایسه دنباله دارها")
+                val textmortabet = listOf("دنباله دار کوتاه دوره", "دنباله دار بلند دوره", "دنباله دار تک گذر", "ساختار دنباله دارها", "منشأ دنباله دارها", "دنباله دار معروف" , "دنباله دار میانی", "چرخه دنباله دار" , "تأثیر دنباله دار")
                 val imagemortabet = listOf(
                     painterResource(R.drawable.cometkotahdore),
                     painterResource(R.drawable.cometbolanddore),
@@ -20141,8 +20141,8 @@ fun Cometmoghayese(){
                     painterResource(R.drawable.cometmanshae),
                     painterResource(R.drawable.cometfamus),
                     painterResource(R.drawable.comemiansetaree),
+                    painterResource(R.drawable.comecharkhehayat),
                     painterResource(R.drawable.cometaethirbarzamin),
-                    painterResource(R.drawable.cometmoghayese),
                 )
                 val tarkib = textmortabet.zip(imagemortabet)
                 Column(
@@ -20377,4 +20377,5 @@ fun Cometmoghayese(){
 @Composable
 fun GreetingPreview() {
     SecandScreen()
+    //dkkdkdk
 }
