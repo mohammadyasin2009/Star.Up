@@ -1,7 +1,8 @@
 package com.example.starup
-
+import android.animation.StateListAnimator
 import androidx.compose.material3.TextFieldDefaults
 import android.app.Activity
+import android.graphics.Bitmap
 import androidx.compose.material3.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.animation.core.tween
@@ -71,9 +72,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
 import kotlin.collections.listOf
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.FloatDecayAnimationSpec
+import androidx.compose.animation.core.animateDecay
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
+import coil.compose.AsyncImage
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.compose.rememberAsyncImagePainter
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.rememberAsyncImagePainter
+
 
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
@@ -87,667 +114,74 @@ class MainActivity : ComponentActivity() {
                     color = Color(0xFF000000),
                 )
                 {
-//                    Column(modifier = Modifier.fillMaxSize() , horizontalAlignment = AbsoluteAlignment.Right) {
-//                        Box(contentAlignment = Alignment.TopEnd , modifier = Modifier.padding(0.dp)){
-//                            DropdownMenu(
-//                                expanded = expanded,
-//                                onDismissRequest = { expanded = false },
-//                                modifier = Modifier.fillMaxHeight()
-//                            ) {
-//                                DropdownMenuItem(
-//                                    text = { Text("اطلاعات") },
-//                                    onClick = {
-//                                        // اینجا کاری که می‌خوای انجام بده
-//                                        expanded = false
-//                                    }
-//                                )
-//                                DropdownMenuItem(
-//                                    text = { Text("تنظیمات") },
-//                                    onClick = {
-//                                        // عمل دیگه
-//                                        expanded = false
-//                                    }
-//                                )
-//                                DropdownMenuItem(
-//                                    text = { Text("خروج") },
-//                                    onClick = {
-//                                        // مثلا خروج از حساب
-//                                        expanded = false
-//                                    }
-//                                )
-//                            }
-//                        }
-//                    }
-//                    when (currentScreen) {
-//                        "asli" -> FeardScreen()
-//                        "home" -> Greeting("Android")
-//                        "zamin" -> Zamin()
-//                        "merikh" -> Merikh()
-//                        "zohal" -> Zohal()
-//                        "moshtari" -> Moshtari()
-//                        "uranos" -> Uranos()
-//                        "nepton" -> Nepton()
-//                        "" -> SecandScreen()
-//                    }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "home",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Greeting("Android")
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        AnimatedContent(
+                            targetState = currentScreen,
+                            transitionSpec = {
+                                slideInHorizontally(
+                                    initialOffsetX = { if(backap) -it else it },
+                                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                                ) + fadeIn(animationSpec = tween(400)) with
+                                        slideOutHorizontally(
+                                            targetOffsetX = { if(backap) it else -it },
+                                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                                        ) + fadeOut(animationSpec = tween(400))
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        ) { screen ->
+                            when(screen) {
+                                "search" -> SearchEwiew()
+                                "home" -> Greeting("Android")
+                                "asli" -> FeardScreen()
+                                "asli1" -> TheardScrean()
+                                "asli2" -> EardScrean()
+                                "asli3" -> NeardScrean()
+                                "asli4" -> TenthScrean()
+                                "asli5" -> ElevenScreen()
+                                "zohre" -> Zohre()
+                                "atarod" -> Atarod()
+                                "zamin" -> Zamin()
+                                "merikh" -> Merikh()
+                                "zohal" -> Zohal()
+                                "moshtari" -> Moshtari()
+                                "uranos" -> Uranos()
+                                "nepton" -> Nepton()
+                                "sun" -> Sun()
+                                "starlite" -> Starlite()
+                                "starbig" -> Starbig()
+                                "starlittle" -> Starlittle()
+                                "starnetron" -> Starnetron()
+                                "starvarible" -> Starvarible()
+                                "starnebula" -> Starnebula()
+                                "starnazari" -> Starnazari()
+                                "moonnatural" -> Moonnatural()
+                                "moonartificional" -> MoonArtificional()
+                                "moonregular" -> MoonRegular()
+                                "mooniregular" -> MoonIregular()
+                                "moon2gane" -> Moon2Gane()
+                                "moonbarkhordi" -> MoonBarkhordi()
+                                "moonstari" -> MoonStari()
+                                "astroidtarkibi" -> AstroidTarkibi()
+                                "astroidteifi" -> AstroidTeifi()
+                                "astroidnoori" -> AstroidNoori()
+                                "astroidfiziki" -> AstroidFiziki()
+                                "astroidmanshaedar" -> AstroidManshaedar()
+                                "astroidmadari" -> AstroidMadari()
+                                "astroidbazalati" -> AstroidBazalati()
+                                "comekotah" -> Comekotah()
+                                "comeboland" -> Comeboland()
+                                "cometakgozar" -> Cometakgozar()
+                                "comesakhtar" -> Cometsakhtar()
+                                "comemanshae" -> Cometmanshae()
+                                "comefamus" -> Cometfamus()
+                                "comemiani" -> Cometmiani()
+                                "comecharkhe" -> Cometcharkhe()
+                                "cometaethir" -> Comettaethir()
+                                "comemoghayese" -> Cometmoghayese()
+                                "" -> SecandScreen()
                             }
                         }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "asli",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                FeardScreen()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "asli1",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            )   {
-                               TheardScrean()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "zohre",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Zohre()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "atarod",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Atarod()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "zamin",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Zamin()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "merikh",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Merikh()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "zohal",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it},
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Zohal()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "moshtari",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    ))+ fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Moshtari()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "uranos",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    ))+ fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Uranos()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "nepton",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                    ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Nepton()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "sun",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Sun()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "starlite",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Starlite()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "starbig",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Starbig()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "starlittle",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Starlittle()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "starnetron",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Starnetron()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "starvarible",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Starvarible()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "starnebula",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Starnebula()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "starnazari",
-                                enter = slideInHorizontally(
-                                    initialOffsetX = { if (backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing
-                                    )
-                                ) + fadeIn(initialAlpha = 0f, animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Starnazari()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "moonnatural",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Moonnatural()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "moonartificional",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                MoonArtificional()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "moonregular",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                MoonRegular()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "mooniregular",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                               MoonIregular()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "moon2gane",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Moon2Gane()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "moonbarkhordi",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                MoonBarkhordi()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "moonstari",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                MoonStari()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "astroidtarkibi",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                AstroidTarkibi()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "astroidteifi",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                AstroidTeifi()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "astroidnoori",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                AstroidNoori()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "astroidfiziki",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                AstroidFiziki()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "astroidmanshaedar",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                AstroidManshaedar()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "astroidmadari",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                AstroidMadari()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "astroidbazalati",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                AstroidBazalati()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "comekotah",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                      animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Comekotah()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "comeboland",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Comeboland()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "cometakgozar",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Cometakgozar()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "comesakhtar",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Cometsakhtar()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "comemanshae",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Cometmanshae()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "comefamus",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Cometfamus()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "comemiani",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Cometmiani()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "comecharkhe",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Cometcharkhe()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "cometaethir",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Comettaethir()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "comemoghayese",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Cometmoghayese()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "search",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                SearchEwiew()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "asli2",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                EardScrean()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "asli3",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                NeardScrean()
-                            }
-                        }
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AnimatedVisibility(
-                                visible = currentScreen == "asli4",
-                                enter = slideInHorizontally(initialOffsetX = { if(backap) -it else it },
-                                    animationSpec = tween(
-                                        400,
-                                        easing = FastOutSlowInEasing)
-                                ) + fadeIn(initialAlpha = 0f , animationSpec = tween(800)),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                TenthScrean()
-                            }
-                        }
-                        when (currentScreen) {
-                            "" -> SecandScreen()
-                        }
-
-
-
+                    }
                     if(expanded) {
                         Box(modifier = Modifier.fillMaxSize()) {
                             Box(
@@ -780,9 +214,9 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxHeight(0.963f)
                                 .fillMaxWidth(0.80f),
                             enter = slideInHorizontally(initialOffsetX = { full -> full }
-                                , animationSpec = tween(durationMillis = 500 , easing = FastOutSlowInEasing)) ,
+                                , animationSpec = tween(durationMillis = 400 , easing = FastOutSlowInEasing)) ,
                             exit = slideOutHorizontally(targetOffsetX = { full -> full }
-                                , animationSpec = tween(durationMillis = 300 , easing = FastOutSlowInEasing))
+                                , animationSpec = tween(durationMillis = 400 , easing = FastOutLinearInEasing))
                         ) {
                             Column(modifier = Modifier.fillMaxSize()) {
                                 Column(
@@ -869,7 +303,7 @@ class MainActivity : ComponentActivity() {
                                                         .padding(
                                                             end = 10.dp,
                                                             bottom = 20.dp,
-                                                            top = 30.dp
+                                                            top = 20.dp
                                                         )
                                                         .clickable(interactionSource = remember { MutableInteractionSource() },
                                                             indication = ripple(color = Color.White)) {
@@ -1209,6 +643,7 @@ class MainActivity : ComponentActivity() {
                                                             , tint = Color(0xFFFFFFFF)
                                                         )
                                                     }
+
                                                     val context = LocalContext.current
                                                     Row(modifier = Modifier
                                                         .fillMaxWidth()
@@ -1270,14 +705,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-
 var expanded by   mutableStateOf(false)
 var currentScreen by mutableStateOf("")
 var backap by mutableStateOf(false)
-//    val randomam = remember { (0..100).random() }
 
 
+
+//اضافه کردن برای همه عکس ها حالت های greeting بعلاوه کم کردن حجم صفحات
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Image(
@@ -1314,7 +748,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                 Icon(imageVector = Icons.Default.Info, contentDescription = null)
                             }
                             IconButton(
-                                onClick = {currentScreen = "search"},
+                                onClick = {currentScreen = "search"
+                                    backap = false},
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                                 modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })
@@ -1326,7 +761,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("استارآپ", fontSize = 25.sp, color = Color.White )
+                                Text("استارآپ", fontSize = 20.sp, color = Color.White , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = { expanded = true },
                                     colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
@@ -1355,21 +790,29 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 "سیاه چاله ها    ",
                 "اکسوپلنت ها    "
             )
-            var picture = listOf(
-                painterResource(R.drawable.planet),
-                painterResource(R.drawable.stars),
-                painterResource(R.drawable.moons),
-                painterResource(R.drawable.astroids),
-                painterResource(R.drawable.comets),
-                painterResource(R.drawable.meteorits),
-                painterResource(R.drawable.solarsystem),
-                painterResource(R.drawable.galaxi),
-                painterResource(R.drawable.nebula),
-                painterResource(R.drawable.starcluster),
-                painterResource(R.drawable.blackhole),
-                painterResource(R.drawable.exoplanet)
+
+            val picture = listOf(
+                R.drawable.planet,
+                R.drawable.stars,
+                R.drawable.moons,
+                R.drawable.astroids,
+                R.drawable.comets,
+                R.drawable.meteorits,
+                R.drawable.solarsystem,
+                R.drawable.galaxi,
+                R.drawable.nebula,
+                R.drawable.starcluster,
+                R.drawable.blackhole,
+                R.drawable.exoplanet
             )
-            var jam = ii.zip(picture)
+
+            // هر تصویر async با rememberAsyncImagePainter
+            val painters = picture.map { resId ->
+                rememberAsyncImagePainter(model = resId)
+            }
+
+            val jam = remember { ii.zip(painters) }
+
             Column(
                 modifier = modifier
                     .fillMaxSize()
@@ -1379,9 +822,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 Text("")
                 Text("")
                 Text("")
-                Text("")
                 LazyColumn() {
-                    items(jam) { (textha, pictureha) ->
+                    items(jam , key = {it.first}) { (textha, pictureha) ->
                         Card(
                             modifier = Modifier
                                 .height(120.dp)
@@ -1395,7 +837,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                             )
                             {
                                 Image(
-                                    painter = painterResource(R.drawable.card),
+                                    painter = painterResource(id = R.drawable.card),
                                     contentDescription = null, contentScale = ContentScale.Crop
                                 )
                                 Button(
@@ -1418,11 +860,16 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                         }
                                         if (textha == "دنباله دارها  ") {
                                             currentScreen = "asli4"
+
+                                            backap = false
+                                        }
+                                        if (textha == "شهاب سنگ ها     ") {
+                                            currentScreen = "asli5"
                                             backap = false
                                         }
                                     },
                                     modifier = Modifier.fillMaxSize().indication(interactionSource = remember { MutableInteractionSource() }
-                                    , indication = null),
+                                        , indication = null),
                                     shape = RectangleShape,
                                     colors = ButtonDefaults.buttonColors(
                                         contentColor = Color.Transparent,
@@ -1447,9 +894,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                         Column(verticalArrangement = Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally) {
                                             Text(
                                                 "$textha",
-                                                fontSize = 25.sp,
-                                                color = Color.White,
-                                                fontStyle = FontStyle.Italic, style = TextStyle(
+                                                fontSize = 20.sp,
+                                                color = Color.White, style = TextStyle(
                                                     shadow = Shadow(
                                                         color = Color(0xFFFFFFFF),
                                                         offset = Offset(0f ,0f)
@@ -1523,15 +969,16 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                                         )
                                                     )
                                                 }
+                                                //فارسی شود 6
                                                 if (textha == "شهاب سنگ ها     ") {
                                                     Spacer(modifier = Modifier.width(18.dp))
                                                     Text(
-                                                        "به زودی", fontSize = 20.sp, color = Color(
+                                                        "بخش", fontSize = 20.sp, color = Color(
                                                             0xFFC9BFBF
                                                         )
                                                     )
                                                     Text(
-                                                        "", fontSize = 20.sp, color = Color(
+                                                        " ۶", fontSize = 20.sp, color = Color(
                                                             0xFFC9BFBF
                                                         )
                                                     )
@@ -1629,38 +1076,30 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun SecandScreen() {
+    Image(
+        painter = painterResource(id =  R.drawable.app_back),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxSize()
+    )
+
     when(currentScreen) {
         "" -> {
-             LaunchedEffect(Unit) {
-                 delay(7000)
-                 currentScreen = "home"
-                 backap = false
-             }
-            Image(
-                painter = painterResource(R.drawable.app_back),
-                contentDescription = null, contentScale = ContentScale.Crop
-            )
+            LaunchedEffect(Unit) {
+                delay(5000)
+                currentScreen = "home"
+                backap = false
+            }
 
             Column(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-            )
-            {
-                Spacer(
-                    modifier = Modifier
-                        .height(250.dp)
-                        .width(300.dp)
-
-                )
+            ) {
+                Spacer(modifier = Modifier.height(250.dp).width(300.dp))
                 Image(
                     painter = painterResource(id = R.drawable.star),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(200.dp)
-                        .clip(
-                            shape = RoundedCornerShape(10.dp)
-                        )
+                    modifier = Modifier.size(200.dp).clip(RoundedCornerShape(10.dp))
                 )
                 Text("")
                 Text(
@@ -1668,30 +1107,24 @@ fun SecandScreen() {
                     color = Color.White,
                     fontSize = 45.sp,
                     fontStyle = FontStyle.Italic,
-                    fontFamily = FontFamily.Cursive
-                    , fontWeight = FontWeight.ExtraBold
-                    , style = TextStyle(
+                    fontFamily = FontFamily.Cursive,
+                    fontWeight = FontWeight.ExtraBold,
+                    style = TextStyle(
                         shadow = Shadow(
                             color = Color(0xFFFFFFFF),
-                            offset = Offset(0f ,0f)
-                            , blurRadius = 20f
+                            offset = Offset(0f, 0f),
+                            blurRadius = 20f
                         )
                     )
                 )
-                Text("")
-                Text("")
-                Text("")
-                Text("")
-                Text("")
-                Text("")
-                CircularProgressIndicator(
-                    color = Color.White
-                )
-
+                Spacer(modifier = Modifier.height(50.dp))
+                CircularProgressIndicator(color = Color.White)
             }
         }
     }
 }
+
+
 @Composable
 fun FeardScreen() {
     Image(painter = painterResource(id = R.drawable.app_back)
@@ -1736,7 +1169,8 @@ fun FeardScreen() {
                                 Icon(imageVector = Icons.Default.Info, contentDescription = null)
                             }
                             IconButton(
-                                onClick = {currentScreen = "search"},
+                                onClick = {currentScreen = "search"
+                                    backap = false},
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                                 modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })
@@ -1748,11 +1182,11 @@ fun FeardScreen() {
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیاره ها", fontSize = 25.sp, color = Color.White)
+                                Text("سیاره ها", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = { expanded = true},
                                     modifier = Modifier.size(50.dp).indication(indication = null ,
-                                            interactionSource = remember { MutableInteractionSource() }),
+                                        interactionSource = remember { MutableInteractionSource() }),
                                     colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
                                 ) {
                                     Icon(imageVector = Icons.Default.Menu, contentDescription = null)
@@ -1856,7 +1290,6 @@ fun FeardScreen() {
                                 )
                                 Box(contentAlignment = Alignment.Center) {
                                     Row() {
-//                                    Spacer(modifier = Modifier.height(100.dp))
                                         Column() {
                                             Text(
                                                 "          $letter",
@@ -1872,7 +1305,7 @@ fun FeardScreen() {
                                                 ), fontWeight = FontWeight.ExtraLight
                                             )
                                         }
-                                        Spacer(modifier = Modifier.width(150.dp))
+                                        Spacer(modifier = Modifier.width(130.dp))
                                     }
                                 }
                                 var first by remember { mutableStateOf(0) }
@@ -1916,7 +1349,7 @@ fun FeardScreen() {
                                                 first7++
                                             }
                                         }, modifier = Modifier.size(50.dp).indication(indication = null ,
-                                        interactionSource = remember { MutableInteractionSource() }),
+                                            interactionSource = remember { MutableInteractionSource() }),
                                     ) {
                                         if (first % 2 == 0) {
                                             Icon(
@@ -2006,8 +1439,6 @@ fun FeardScreen() {
                                                 modifier = Modifier.size(40.dp)
                                             )
                                         }
-
-
                                         if (first3 % 2 == 0) {
                                             Icon(
                                                 imageVector = Icons.Default.Favorite,
@@ -2167,6 +1598,7 @@ fun FeardScreen() {
     }
 }
 
+
 @Composable
 fun TheardScrean() {
     Image(painter = painterResource(id = R.drawable.app_back)
@@ -2211,7 +1643,8 @@ fun TheardScrean() {
                                 Icon(imageVector = Icons.Default.Info, contentDescription = null)
                             }
                             IconButton(
-                                onClick = {currentScreen = "search"},
+                                onClick = {currentScreen = "search"
+                                    backap = false},
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                                 modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })
@@ -2223,11 +1656,11 @@ fun TheardScrean() {
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("ستارگان", fontSize = 25.sp, color = Color.White)
+                                Text("ستارگان", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = { expanded = true},
                                     modifier = Modifier.size(50.dp).indication(indication = null ,
-                                            interactionSource = remember { MutableInteractionSource() }),
+                                        interactionSource = remember { MutableInteractionSource() }),
                                     colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
                                 ) {
                                     Icon(imageVector = Icons.Default.Menu, contentDescription = null)
@@ -2317,7 +1750,7 @@ fun TheardScrean() {
                                             currentScreen = "starnazari"
                                         }
                                     }, modifier = Modifier.fillMaxSize().indication(interactionSource = remember { MutableInteractionSource() }
-                                    , indication = null),
+                                        , indication = null),
                                     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                                 ) {
 
@@ -2347,7 +1780,7 @@ fun TheardScrean() {
                                                 ), fontWeight = FontWeight.ExtraLight
                                             )
                                         }
-                                        Spacer(modifier = Modifier.width(150.dp))
+                                        Spacer(modifier = Modifier.width(130.dp))
                                     }
                                 }
                                 var first by remember { mutableStateOf(0) }
@@ -2391,8 +1824,8 @@ fun TheardScrean() {
                                                 first7++
                                             }
                                         }, modifier = Modifier.size(50.dp)
-                                                .indication(indication = null ,
-                                        interactionSource = remember { MutableInteractionSource() }),
+                                            .indication(indication = null ,
+                                                interactionSource = remember { MutableInteractionSource() }),
                                     ) {
                                         if (first % 2 == 0) {
                                             Icon(
@@ -2642,6 +2075,7 @@ fun TheardScrean() {
         }
     }
 }
+
 @Composable
 fun EardScrean() {
     Image(painter = painterResource(id = R.drawable.app_back)
@@ -2686,7 +2120,8 @@ fun EardScrean() {
                                 Icon(imageVector = Icons.Default.Info, contentDescription = null)
                             }
                             IconButton(
-                                onClick = {currentScreen = "search"},
+                                onClick = {currentScreen = "search"
+                                    backap = false},
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                                 modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })
@@ -2698,7 +2133,7 @@ fun EardScrean() {
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("قمر ها", fontSize = 25.sp, color = Color.White)
+                                Text("قمر ها", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = { expanded = true},
                                     modifier = Modifier.size(50.dp).indication(indication = null ,
@@ -2817,7 +2252,7 @@ fun EardScrean() {
                                                 ), fontWeight = FontWeight.ExtraLight
                                             )
                                         }
-                                        Spacer(modifier = Modifier.width(150.dp))
+                                        Spacer(modifier = Modifier.width(130.dp))
                                     }
                                 }
                                 var first by remember { mutableStateOf(0) }
@@ -3153,7 +2588,8 @@ fun NeardScrean() {
                                 Icon(imageVector = Icons.Default.Info, contentDescription = null)
                             }
                             IconButton(
-                                onClick = {currentScreen = "search"},
+                                onClick = {currentScreen = "search"
+                                    backap = false},
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                                 modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })
@@ -3165,7 +2601,7 @@ fun NeardScrean() {
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیارک ها", fontSize = 25.sp, color = Color.White)
+                                Text("سیارک ها", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = { expanded = true},
                                     modifier = Modifier.size(50.dp).indication(indication = null ,
@@ -3191,7 +2627,7 @@ fun NeardScrean() {
                 painterResource(id = R.drawable.astroidmanshaedar),
                 painterResource(id = R.drawable.astroidmadari),
                 painterResource(id = R.drawable.astroidbazalati),
-                )
+            )
             val kameltar = esm.zip(language)
 
 
@@ -3285,7 +2721,7 @@ fun NeardScrean() {
                                                 ), fontWeight = FontWeight.ExtraLight
                                             )
                                         }
-                                        Spacer(modifier = Modifier.width(150.dp))
+                                        Spacer(modifier = Modifier.width(130.dp))
                                     }
                                 }
                                 var first by remember { mutableStateOf(0) }
@@ -3587,7 +3023,8 @@ fun TenthScrean() {
                                 Icon(imageVector = Icons.Default.Info, contentDescription = null)
                             }
                             IconButton(
-                                onClick = {currentScreen = "search"},
+                                onClick = {currentScreen = "search"
+                                    backap = false},
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                                 modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })
@@ -3599,7 +3036,7 @@ fun TenthScrean() {
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("دنباله دارها", fontSize = 25.sp, color = Color.White)
+                                Text("دنباله دارها", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = { expanded = true},
                                     modifier = Modifier.size(50.dp).indication(indication = null ,
@@ -3745,7 +3182,7 @@ fun TenthScrean() {
                                                 ), fontWeight = FontWeight.ExtraLight
                                             )
                                         }
-                                        Spacer(modifier = Modifier.width(150.dp))
+                                        Spacer(modifier = Modifier.width(130.dp))
                                     }
                                 }
                                 var first by remember { mutableStateOf(0) }
@@ -4108,13 +3545,405 @@ fun TenthScrean() {
     }
 }
 @Composable
+fun ElevenScreen() {
+    Image(painter = painterResource(id = R.drawable.app_back)
+        , contentScale = ContentScale.Crop , contentDescription = null)
+    when(currentScreen) {
+        "asli5" -> {
+            Column {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.5.dp),
+                    shape = RectangleShape,
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF030A33))
+                ) {
+                }
+                Column() {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        shape = RectangleShape,
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF0707AD))
+                    ) {
+                        Row(modifier = Modifier.padding(10.dp)) {
+                            IconButton(onClick = { currentScreen = "home"
+                                backap = true
+                            }, modifier = Modifier.indication(indication = null ,
+                                interactionSource = remember { MutableInteractionSource() }),
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)) {
+                                Icon(
+                                    imageVector = Icons.Outlined.ArrowBack,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(40.dp)
+                                )
+                            }
+                            IconButton(
+                                onClick = {},
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                                modifier = Modifier.indication(indication = null ,
+                                    interactionSource = remember { MutableInteractionSource() })
+                            ) {
+                                Icon(imageVector = Icons.Default.Info, contentDescription = null)
+                            }
+                            IconButton(
+                                onClick = {currentScreen = "search"
+                                    backap = false},
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                                modifier = Modifier.indication(indication = null ,
+                                    interactionSource = remember { MutableInteractionSource() })
+                            ) {
+                                Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text("شهاب سنگ ها", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
+                                IconButton(
+                                    onClick = { expanded = true},
+                                    modifier = Modifier.size(50.dp).indication(indication = null ,
+                                        interactionSource = remember { MutableInteractionSource() }),
+                                    colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
+                                ) {
+                                    Icon(imageVector = Icons.Default.Menu, contentDescription = null)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            val esm = listOf(
+                "شهاب سنگ سنگی",
+                "شهاب سنگ آهنی",
+                "شهاب سنگ سنگی آهنی",
+                "دسته بندی شهاب سنگ ها",
+                "نحوه ورود شهاب سنگ ها",
+                "شهاب سنگ های معروف",
+            )
+            val language = listOf(
+                painterResource(id = R.drawable.cometkotahdore),
+                painterResource(id = R.drawable.cometbolanddore),
+                painterResource(id = R.drawable.cometzodgozar),
+                painterResource(id = R.drawable.cometsakhtar),
+                painterResource(id = R.drawable.cometmanshae),
+                painterResource(id = R.drawable.cometfamus),
+            )
+            val kameltar = esm.zip(language)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("")
+                Text("")
+                Text("")
+                Text("")
+                //بسیار چیز خفن
+                LazyColumn() {
+                    items(kameltar) { (letter, esmha) ->
+                        Card(
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .height(100.dp)
+                                .fillMaxWidth()
+                                .clip(shape = RoundedCornerShape(100.dp))
+                        ) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.card),
+                                    contentDescription = null, contentScale = ContentScale.Crop
+                                )
+                                Button(
+                                    onClick = {
+                                        if (letter == "شهاب سنگ سنگی") {
+                                            backap = false
+                                            currentScreen = "comekotah"
+                                        }
+                                        if (letter == "شهاب سنگ آهنی") {
+                                            currentScreen = "comeboland"
+                                            backap = false
+                                        }
+                                        if (letter == "شهاب سنگ سنگی آهنی") {
+                                            backap = false
+                                            currentScreen = "cometakgozar"
+                                        }
+                                        if (letter == "دسته بندی شهاب سنگ ها") {
+                                            backap = false
+                                            currentScreen = "comesakhtar"
+                                        }
+                                        if (letter == "نحوه ورود شهاب سنگ ها") {
+                                            backap = false
+                                            currentScreen = "comemanshae"
+                                        }
+                                        if (letter == "شهاب سنگ های معروف") {
+                                            backap = false
+                                            currentScreen = "comefamus"
+                                        }
+                                    }, modifier = Modifier.fillMaxSize().indication(interactionSource = remember { MutableInteractionSource() }
+                                        , indication = null),
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+                                ) {
+
+                                }
+                                Image(
+                                    painter = esmha,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .width(145.dp)
+                                        .height(300.dp)
+                                )
+                                Box(contentAlignment = Alignment.Center) {
+                                    Row() {
+//                                    Spacer(modifier = Modifier.height(100.dp))
+                                        Column() {
+                                            Text(
+                                                "   $letter",
+                                                color = Color.White,
+                                                fontSize = 20.sp,
+                                                fontStyle = FontStyle.Italic
+                                                , style = TextStyle(
+                                                    shadow = Shadow(
+                                                        color = Color(0xFFFFFFFF),
+                                                        offset = Offset(0f ,0f)
+                                                        , blurRadius = 20f
+                                                    )
+                                                ), fontWeight = FontWeight.ExtraLight
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.width(130.dp))
+                                    }
+                                }
+                                var first by remember { mutableStateOf(0) }
+                                var first1 by remember { mutableStateOf(0) }
+                                var first2 by remember { mutableStateOf(0) }
+                                var first3 by remember { mutableStateOf(0) }
+                                var first4 by remember { mutableStateOf(0) }
+                                var first5 by remember { mutableStateOf(0) }
+                                Box(
+                                    contentAlignment = Alignment.CenterStart,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(15.dp)
+                                ) {
+                                    IconButton(
+                                        onClick = {
+                                            if (letter == "شهاب سنگ سنگی") {
+                                                first++
+                                            }
+                                            if (letter == "شهاب سنگ آهنی") {
+                                                first1++
+                                            }
+                                            if (letter == "شهاب سنگ سنگی آهنی") {
+                                                first2++
+                                            }
+                                            if (letter == "دسته بندی شهاب سنگ ها") {
+                                                first3++
+                                            }
+                                            if (letter == "منشأ دنباله‌دارها") {
+                                                first4++
+                                            }
+                                            if (letter == "شهاب سنگ های معروف") {
+                                                first5++
+                                            }
+                                        }, modifier = Modifier.size(50.dp)
+                                            .indication(indication = null ,
+                                                interactionSource = remember { MutableInteractionSource() }),
+                                    ) {
+                                        if (first % 2 == 0) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.Transparent,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first % 2 == 1) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first1 % 2 == 0) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.Transparent,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first1 % 2 == 1) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first2 % 2 == 0) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.Transparent,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first2 % 2 == 1) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first3 % 2 == 0) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.Transparent,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first3 % 2 == 1) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+
+
+                                        if (first4 % 2 == 0) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.Transparent,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first4 % 2 == 1) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first5 % 2 == 0) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.Transparent,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                        if (first5 % 2 == 1) {
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.FavoriteBorder,
+                                                contentDescription = null,
+                                                tint = Color.White,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun SearchEwiew(){
     data class PlanetItem(val name: String, val image: Painter)
     Image(painter = painterResource(id = R.drawable.app_back)
         , contentScale = ContentScale.Crop
         , contentDescription = null,
         modifier = Modifier.fillMaxSize())
-  when(currentScreen) {
+    when(currentScreen) {
         "search" -> {
             var bazsafhe by remember { mutableStateOf(false) }
             val planets = listOf(
@@ -4158,6 +3987,12 @@ fun SearchEwiew(){
                 PlanetItem("چرخه‌ حیات دنباله‌دار", painterResource(id = R.drawable.comecharkhehayat)),
                 PlanetItem("تأثیر دنباله‌دار بر زمین", painterResource(id = R.drawable.cometaethirbarzamin)),
                 PlanetItem("مقایسه دنباله‌دارها", painterResource(id = R.drawable.cometmoghayese)),
+                PlanetItem("شهاب سنگ سنگی", painterResource(id = R.drawable.cometmanshae)),
+                PlanetItem("شهاب سنگ آهنی", painterResource(id = R.drawable.cometfamus)),
+                PlanetItem("شهاب سنگ سنگی آهن", painterResource(id = R.drawable.comemiansetaree)),
+                PlanetItem("دسته بندی شهاب سنگ ها", painterResource(id = R.drawable.comecharkhehayat)),
+                PlanetItem("نحوه ورود شهاب سنگ ها", painterResource(id = R.drawable.cometaethirbarzamin)),
+                PlanetItem("شهاب سنگ های معروف", painterResource(id = R.drawable.cometmoghayese)),
             )
             var textma by remember { mutableStateOf("") }
             val kameltar = planets.filter {it.name.contains (textma , ignoreCase = true) }
@@ -4177,11 +4012,11 @@ fun SearchEwiew(){
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp), placeholder = {
-                                Text("عبارت مورد نظر خود را وارد کنید   " , style = TextStyle(
-                                    textDirection = TextDirection.Rtl
-                                ))},
-                            shape = RectangleShape,
-                            colors = TextFieldDefaults.colors(
+                            Text("عبارت مورد نظر خود را وارد کنید   " , style = TextStyle(
+                                textDirection = TextDirection.Rtl
+                            ) , fontSize = 12.sp)},
+                        shape = RectangleShape,
+                        colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color(0xFF0707AD),
                             unfocusedContainerColor = Color(0xFF0707AD),
                             focusedTextColor = Color.White,
@@ -4468,7 +4303,6 @@ fun SearchEwiew(){
                                         )
                                         Box(contentAlignment = Alignment.Center) {
                                             Row() {
-//                                    Spacer(modifier = Modifier.height(100.dp))
                                                 Column() {
                                                     Text(
                                                         "          $letter",
@@ -4659,7 +4493,7 @@ fun SearchEwiew(){
                                                 },
                                                 modifier = Modifier.size(50.dp)
                                                     .indication(indication = null ,
-                                                    interactionSource = remember { MutableInteractionSource() }),
+                                                        interactionSource = remember { MutableInteractionSource() }),
                                             ) {
                                                 if (first % 2 == 0) {
                                                     Icon(
@@ -5830,6 +5664,9 @@ fun SearchEwiew(){
 
 
 
+
+
+
 //سیاره ها
 
 
@@ -5852,10 +5689,13 @@ fun SearchEwiew(){
 
 @Composable
 fun Zamin(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentDescription = null,
+        contentScale = ContentScale.Crop
+    )
     when(currentScreen) {
         "zamin" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -5904,7 +5744,7 @@ fun Zamin(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("زمین", fontSize = 25.sp, color = Color.White)
+                                Text("زمین", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp).indication(interactionSource = remember { MutableInteractionSource() }
                                         , indication = null),
@@ -6226,13 +6066,13 @@ fun Zamin(){
 }
 @Composable
 fun Zohal(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentDescription = null,
+        contentScale = ContentScale.Crop
+    )
     when(currentScreen) {
         "zohal" -> {
-            Image(
-                painter = painterResource(id = R.drawable.app_back),
-                contentScale = ContentScale.Crop,
-                contentDescription = null
-            )
             Column {
                 Card(
                     modifier = Modifier
@@ -6286,7 +6126,7 @@ fun Zohal(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("زحل", fontSize = 25.sp, color = Color.White)
+                                Text("زحل", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp).indication(interactionSource = remember { MutableInteractionSource() }
@@ -6635,10 +6475,13 @@ fun Zohal(){
 }
 @Composable
 fun Atarod(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentDescription = null,
+        contentScale = ContentScale.Crop
+    )
     when(currentScreen) {
         "atarod" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -6690,7 +6533,7 @@ fun Atarod(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("عطارد", fontSize = 25.sp, color = Color.White)
+                                Text("عطارد", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
@@ -7024,13 +6867,13 @@ fun Atarod(){
 }
 @Composable
 fun Moshtari() {
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when (currentScreen) {
         "moshtari" -> {
-            Image(
-                painter = painterResource(id = R.drawable.app_back),
-                contentScale = ContentScale.Crop,
-                contentDescription = null
-            )
             Column {
                 Card(
                     modifier = Modifier
@@ -7084,7 +6927,7 @@ fun Moshtari() {
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("مشتری", fontSize = 25.sp, color = Color.White)
+                                Text("مشتری", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
@@ -7419,10 +7262,13 @@ fun Moshtari() {
 
 @Composable
 fun Zohre(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "zohre" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -7474,7 +7320,7 @@ fun Zohre(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("زهره", fontSize = 25.sp, color = Color.White)
+                                Text("زهره", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(
                                     onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp).indication(indication = null ,
@@ -7810,10 +7656,13 @@ fun Zohre(){
 }
 @Composable
 fun Merikh(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "merikh" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -7860,7 +7709,7 @@ fun Merikh(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("مریخ", fontSize = 25.sp, color = Color.White)
+                                Text("مریخ", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -8188,10 +8037,13 @@ fun Merikh(){
 }
 @Composable
 fun Uranos(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "uranos" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -8238,7 +8090,7 @@ fun Uranos(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("اورانوس", fontSize = 25.sp, color = Color.White)
+                                Text("اورانوس", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -8543,10 +8395,13 @@ fun Uranos(){
 }
 @Composable
 fun Nepton(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "nepton" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -8593,7 +8448,7 @@ fun Nepton(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("نپتون", fontSize = 25.sp, color = Color.White)
+                                Text("نپتون", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -8981,10 +8836,13 @@ fun Nepton(){
 
 @Composable
 fun Sun(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "sun" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -9031,7 +8889,7 @@ fun Sun(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("خورشیدی", fontSize = 25.sp, color = Color.White)
+                                Text("خورشیدی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -9339,10 +9197,13 @@ fun Sun(){
 
 @Composable
 fun Starlite(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "starlite" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -9389,7 +9250,7 @@ fun Starlite(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("پرنور و مشهور", fontSize = 25.sp, color = Color.White)
+                                Text("پرنور و مشهور", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -9708,10 +9569,13 @@ fun Starlite(){
 
 @Composable
 fun Starbig(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "starbig" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -9758,7 +9622,7 @@ fun Starbig(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("غول و ابرغول", fontSize = 25.sp, color = Color.White)
+                                Text("غول و ابرغول", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -10082,10 +9946,13 @@ fun Starbig(){
 
 @Composable
 fun Starlittle(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "starlittle" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -10132,7 +9999,7 @@ fun Starlittle(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("کوتوله و داغ", fontSize = 25.sp, color = Color.White)
+                                Text("کوتوله و داغ", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -10443,10 +10310,13 @@ fun Starlittle(){
 
 @Composable
 fun Starnetron(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "starnetron" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -10493,7 +10363,7 @@ fun Starnetron(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("نوترونی و انفجاری", fontSize = 25.sp, color = Color.White)
+                                Text("نوترونی و انفجاری", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -10509,7 +10379,7 @@ fun Starnetron(){
 
                 var textsetarenutrononi = listOf(": معرفی کلی\n" +
                         "\n" +
-                        "ستارگان نوترونی بقایای بسیار فشرده ستارگان پرجرم‌اند که پس از انفجار اَبَرنواختر در پایان زندگی یک ستاره بزرگ (با جرم اولیه ≈۸–۲۵ برابر خورشید) شکل می‌گیرند. چگالی آن‌ها بیش از چگالی هستهٔ اتم است؛ یک قاشق چای‌خوری از ماده‌شان می‌تواند میلیاردها تن وزن داشته باشد. سرعت چرخش آن‌ها از چند میلی‌ثانیه تا چند ثانیه متغیر است و برخی‌شان «پال‌سار» با پرتوهای رادیویی یا ایکس هستند\u202b." +
+                        "ستارگان نوترونی بقایای بسیار فشرده ستارگان پرجرم‌اند که پس از انفجار اَبَرنواختر در پایان زندگی یک ستاره بزرگ (با جرم اولیه ≈۸–۲۵ برابر خورشید) شکل می‌گیرند. چگالی آن‌ها بیش از چگالی هستهٔ اتم است؛ یک قاشق چای‌خوری از ماده‌شان می‌تواند میلیاردها تن وزن داشته باشد. سرعت چرخش آن‌ها از چند میلی‌ثانیه تا چند ثانیه متغیر است و برخی‌شان پال‌سار با پرتوهای رادیویی یا ایکس هستند\u202b." +
                         "\n" +
                         "\n" +
                         "\n" +
@@ -10808,10 +10678,13 @@ fun Starnetron(){
 
 @Composable
 fun Starvarible(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "starvarible" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -10858,7 +10731,7 @@ fun Starvarible(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("متغیر و خاص", fontSize = 25.sp, color = Color.White)
+                                Text("متغیر و خاص", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -11160,10 +11033,13 @@ fun Starvarible(){
 
 @Composable
 fun Starnebula(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "starnebula" ->{
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -11210,7 +11086,7 @@ fun Starnebula(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("مناطق ستاره زایی", fontSize = 25.sp, color = Color.White)
+                                Text("مناطق ستاره زایی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -11525,10 +11401,13 @@ fun Starnebula(){
 
 @Composable
 fun Starnazari(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "starnazari" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -11575,7 +11454,7 @@ fun Starnazari(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("اصول نظری", fontSize = 25.sp, color = Color.White)
+                                Text("اصول نظری", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -11895,10 +11774,13 @@ fun Starnazari(){
 
 @Composable
 fun Moonnatural(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "moonnatural" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -11945,7 +11827,7 @@ fun Moonnatural(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("قمر های طبیعی", fontSize = 25.sp, color = Color.White)
+                                Text("قمر های طبیعی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -12244,10 +12126,13 @@ fun Moonnatural(){
 
 @Composable
 fun MoonArtificional(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "moonartificional" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -12294,7 +12179,7 @@ fun MoonArtificional(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("قمر های مصنوعی", fontSize = 25.sp, color = Color.White)
+                                Text("قمر های مصنوعی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -12591,10 +12476,13 @@ fun MoonArtificional(){
 }
 @Composable
 fun MoonRegular(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "moonregular" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -12641,7 +12529,7 @@ fun MoonRegular(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("قمر های منظم", fontSize = 25.sp, color = Color.White)
+                                Text("قمر های منظم", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -12942,10 +12830,13 @@ fun MoonRegular(){
 }
 @Composable
 fun MoonIregular(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "mooniregular" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -12992,7 +12883,7 @@ fun MoonIregular(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("قمر های نامنظم", fontSize = 25.sp, color = Color.White)
+                                Text("قمر های نامنظم", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -13282,10 +13173,13 @@ fun MoonIregular(){
 }
 @Composable
 fun Moon2Gane(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "moon2gane" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -13332,7 +13226,7 @@ fun Moon2Gane(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("قمر های دوگانه", fontSize = 25.sp, color = Color.White)
+                                Text("قمر های دوگانه", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -13629,10 +13523,13 @@ fun Moon2Gane(){
 }
 @Composable
 fun MoonBarkhordi(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "moonbarkhordi" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -13679,7 +13576,7 @@ fun MoonBarkhordi(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("قمر های برخوردی", fontSize = 25.sp, color = Color.White)
+                                Text("قمر های برخوردی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -13985,10 +13882,13 @@ fun MoonBarkhordi(){
 }
 @Composable
 fun MoonStari(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "moonstari" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -14035,7 +13935,7 @@ fun MoonStari(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("قمر های بین ستاره ای", fontSize = 25.sp, color = Color.White)
+                                Text("قمر های بین ستاره ای", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -14356,10 +14256,13 @@ fun MoonStari(){
 
 @Composable
 fun AstroidTarkibi(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "astroidtarkibi" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -14406,7 +14309,7 @@ fun AstroidTarkibi(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیارک های ترکیبی", fontSize = 25.sp, color = Color.White)
+                                Text("سیارک های ترکیبی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -14699,10 +14602,13 @@ fun AstroidTarkibi(){
 }
 @Composable
 fun AstroidTeifi(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "astroidteifi" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -14749,7 +14655,7 @@ fun AstroidTeifi(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیارک های طیفی", fontSize = 25.sp, color = Color.White)
+                                Text("سیارک های طیفی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -15043,10 +14949,13 @@ fun AstroidTeifi(){
 }
 @Composable
 fun AstroidNoori(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "astroidnoori" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -15093,7 +15002,7 @@ fun AstroidNoori(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیارک های نوری", fontSize = 25.sp, color = Color.White)
+                                Text("سیارک های نوری", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -15385,10 +15294,13 @@ fun AstroidNoori(){
 }
 @Composable
 fun AstroidFiziki(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "astroidfiziki" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -15435,7 +15347,7 @@ fun AstroidFiziki(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیارک های فیزیکی", fontSize = 25.sp, color = Color.White)
+                                Text("سیارک های فیزیکی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -15486,7 +15398,7 @@ fun AstroidFiziki(){
                             ": نقش در علم و فناوری\n" +
                             "\n" +
                             "درک ترکیب داخلی اجرام کوچک به شناخت منشأ سیارک‌ها و مسیر تجمع شهاب‌سنگ‌ها کمک می‌کند. " +
-                            "استفاده در برنامه‌های دفاع سیاره‌ای: بررسی تماس‌پذیری سیارک و پاسخ به برخوردهای مصنوعی (مانند دارت). " +
+                            "استفاده در برنامه‌های دفاع سیاره‌ای: بررسی تماس‌ پذیری سیارک و پاسخ به برخوردهای مصنوعی (مانند دارت). " +
                             "هدایت طراحی مأموریت‌های نمونه‌برداری مکانیزه: انتخاب هدف از میان سیارک‌های با ساختار مناسب. " +
                             "توسعه روش‌های تحلیلی دقیق در تحلیل خمات نور، مدل‌های عددی چرخش و ترکیب ای آی و ام ال برای مدیریت پایگاه‌های داده بزرگ\u202b." +
                             "\n" +
@@ -15727,10 +15639,13 @@ fun AstroidFiziki(){
 }
 @Composable
 fun AstroidManshaedar(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "astroidmanshaedar" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -15777,7 +15692,7 @@ fun AstroidManshaedar(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیارک های منشادار", fontSize = 25.sp, color = Color.White)
+                                Text("سیارک های منشادار", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -16066,10 +15981,13 @@ fun AstroidManshaedar(){
 }
 @Composable
 fun AstroidMadari(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "astroidmadari" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -16116,7 +16034,7 @@ fun AstroidMadari(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیارک های مداری", fontSize = 25.sp, color = Color.White)
+                                Text("سیارک های مداری", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -16406,10 +16324,13 @@ fun AstroidMadari(){
 }
 @Composable
 fun AstroidBazalati(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "astroidbazalati" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -16456,7 +16377,7 @@ fun AstroidBazalati(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("سیارک های بازآلتی", fontSize = 25.sp, color = Color.White)
+                                Text("سیارک های بازآلتی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -16768,10 +16689,13 @@ fun AstroidBazalati(){
 
 @Composable
 fun Comekotah(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "comekotah" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -16818,7 +16742,7 @@ fun Comekotah(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("دنباله دار کوتاه دوره", fontSize = 25.sp, color = Color.White)
+                                Text("دنباله دار کوتاه دوره", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -17127,10 +17051,13 @@ fun Comekotah(){
 }
 @Composable
 fun Comeboland(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "comeboland" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -17177,7 +17104,7 @@ fun Comeboland(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("دنباله دار بلند دوره", fontSize = 25.sp, color = Color.White)
+                                Text("دنباله دار بلند دوره", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -17483,10 +17410,13 @@ fun Comeboland(){
 }
 @Composable
 fun Cometakgozar(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "cometakgozar" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -17533,7 +17463,7 @@ fun Cometakgozar(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("دنباله دار تک گذر", fontSize = 25.sp, color = Color.White)
+                                Text("دنباله دار تک گذر", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -17841,10 +17771,13 @@ fun Cometakgozar(){
 }
 @Composable
 fun Cometsakhtar(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "comesakhtar" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -17891,7 +17824,7 @@ fun Cometsakhtar(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("ساختار دنباله دارها", fontSize = 25.sp, color = Color.White)
+                                Text("ساختار دنباله دارها", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -18203,10 +18136,13 @@ fun Cometsakhtar(){
 }
 @Composable
 fun Cometmanshae(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "comemanshae" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -18253,7 +18189,7 @@ fun Cometmanshae(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("منشأ دنباله دارها", fontSize = 25.sp, color = Color.White)
+                                Text("منشأ دنباله دارها", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -18566,10 +18502,13 @@ fun Cometmanshae(){
 }
 @Composable
 fun Cometfamus(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "comefamus" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -18616,7 +18555,7 @@ fun Cometfamus(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("دنباله دار معروف", fontSize = 25.sp, color = Color.White)
+                                Text("دنباله دار معروف", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -18929,10 +18868,13 @@ fun Cometfamus(){
 }
 @Composable
 fun Cometmiani(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "comemiani" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -18979,7 +18921,7 @@ fun Cometmiani(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("دنباله دار میانی", fontSize = 25.sp, color = Color.White)
+                                Text("دنباله دار میانی", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -19290,10 +19232,13 @@ fun Cometmiani(){
 }
 @Composable
 fun Cometcharkhe(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "comecharkhe" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -19340,7 +19285,7 @@ fun Cometcharkhe(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("چرخه حیات دنباله دار", fontSize = 25.sp, color = Color.White)
+                                Text("چرخه حیات دنباله دار", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -19652,10 +19597,13 @@ fun Cometcharkhe(){
 }
 @Composable
 fun Comettaethir(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "cometaethir" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -19702,7 +19650,7 @@ fun Comettaethir(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("تأثیر دنباله دار بر زمین", fontSize = 25.sp, color = Color.White)
+                                Text("تأثیر دنباله دار بر زمین", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -20012,10 +19960,13 @@ fun Comettaethir(){
 }
 @Composable
 fun Cometmoghayese(){
+    Image(
+        painter = painterResource(id = R.drawable.app_back),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
     when(currentScreen) {
         "comemoghayese" -> {
-            Image(painter = painterResource(id = R.drawable.app_back)
-                , contentScale = ContentScale.Crop , contentDescription = null)
             Column {
                 Card(
                     modifier = Modifier
@@ -20062,7 +20013,7 @@ fun Cometmoghayese(){
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("مقایسه دنباله دارها", fontSize = 25.sp, color = Color.White)
+                                Text("مقایسه دنباله دارها", fontSize = 20.sp, color = Color.White  , maxLines = 1 , fontWeight = FontWeight.ExtraBold)
                                 IconButton(onClick = {expanded = true},
                                     modifier = Modifier.size(50.dp)
                                         .indication(indication = null ,
@@ -20377,5 +20328,4 @@ fun Cometmoghayese(){
 @Composable
 fun GreetingPreview() {
     SecandScreen()
-    //dkkdkdk
 }
