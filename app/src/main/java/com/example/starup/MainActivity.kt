@@ -101,6 +101,7 @@ import androidx.compose.ui.platform.LocalContext
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 
+//
 
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
@@ -711,6 +712,8 @@ var backap by mutableStateOf(false)
 
 
 
+//hbbhb
+//bhjn
 //اضافه کردن برای همه عکس ها حالت های greeting بعلاوه کم کردن حجم صفحات
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
