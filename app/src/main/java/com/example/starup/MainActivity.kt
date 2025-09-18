@@ -805,7 +805,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 R.drawable.exoplanet
             )
 
-            // هر تصویر async با rememberAsyncImagePainter
             val painters = picture.map { resId ->
                 rememberAsyncImagePainter(model = resId)
             }
