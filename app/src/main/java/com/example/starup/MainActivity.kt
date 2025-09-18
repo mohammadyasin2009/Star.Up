@@ -102,9 +102,6 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 
 
-
-
-
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -713,9 +710,6 @@ var currentScreen by mutableStateOf("")
 var backap by mutableStateOf(false)
 
 
-
-//hbbhb
-//bhjn
 //اضافه کردن برای همه عکس ها حالت های greeting بعلاوه کم کردن حجم صفحات
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -6745,7 +6739,7 @@ fun Atarod(){
                                                         )
                                                         Button(
                                                             modifier = Modifier.fillMaxSize(
-                                                        ).indication(interactionSource = remember { MutableInteractionSource() }
+                                                            ).indication(interactionSource = remember { MutableInteractionSource() }
                                                                 , indication = null)
                                                             , onClick = {
                                                                 if (matnha == "عطارد") {
@@ -6780,10 +6774,10 @@ fun Atarod(){
                                                                     currentScreen = "nepton"
                                                                     backap = false
                                                                 }
-                                                        }, colors = ButtonDefaults.buttonColors(
-                                                            contentColor = Color.Transparent,
-                                                            containerColor = Color.Transparent
-                                                        )) {
+                                                            }, colors = ButtonDefaults.buttonColors(
+                                                                contentColor = Color.Transparent,
+                                                                containerColor = Color.Transparent
+                                                            )) {
 
                                                         }
                                                         Row() {
@@ -7296,7 +7290,7 @@ fun Zohre(){
                                 backap = true
                             },
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
-                             , modifier = Modifier.indication(indication = null ,
+                                , modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })) {
                                 Icon(
                                     imageVector = Icons.Outlined.ArrowBack,
@@ -7529,7 +7523,7 @@ fun Zohre(){
                                                             )
                                                             Button(
                                                                 modifier = Modifier.fillMaxSize(
-                                                            ).indication(indication = null ,
+                                                                ).indication(indication = null ,
                                                                     interactionSource = remember { MutableInteractionSource() }),
                                                                 onClick = {
                                                                     if (matnha == "عطارد") {
@@ -7689,7 +7683,7 @@ fun Merikh(){
                             IconButton(onClick = {currentScreen = "asli"
                                 backap = true
                             } , colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
-                            , modifier = Modifier.indication(indication = null ,
+                                , modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })) {
                                 Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null , modifier = Modifier.size(40.dp))
                             }
@@ -8428,7 +8422,7 @@ fun Nepton(){
                             IconButton(onClick = {currentScreen = "asli"
                                 backap = true
                             } , colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
-                            , modifier = Modifier.indication(indication = null ,
+                                , modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })){
                                 Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null , modifier = Modifier.size(40.dp))
                             }
@@ -8869,7 +8863,7 @@ fun Sun(){
                             IconButton(onClick = {currentScreen = "asli1"
                                 backap = true
                             } , colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
-                            , modifier = Modifier.indication(indication = null ,
+                                , modifier = Modifier.indication(indication = null ,
                                     interactionSource = remember { MutableInteractionSource() })){
                                 Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null , modifier = Modifier.size(40.dp))
                             }
@@ -10018,7 +10012,7 @@ fun Starlittle(){
                 }
 
 
-                    var textkootolehdagh = listOf(": معرفی کلی\n" +
+                var textkootolehdagh = listOf(": معرفی کلی\n" +
                         "\n" +
                         "ستارگان کوتولهٔ داغ گروهی از ستارگان با جرم پایین تا متوسط هستند که دمای سطحی بسیار بالا (معمولاً بیش از ۲۰٬۰۰۰ درجه سلسیوس) دارند و از نظر ساختاری و سیر تکامل با دیگر انواع ستارگان تفاوت دارند. این دسته شامل کوتوله‌های سفید، کوتوله‌های زیرقزمری داغ، و کوتوله‌های هلیومی یا اس دی بی می‌شود. منشأ بیشتر آن‌ها از بقایای ستارگان غول‌پیکر یا ستارگان نزدیک به اتمام عمر در شاخهٔ افقی است. این ستارگان از جمله منابع فرابنفش شدید در کهکشان هستند و در خوشه‌های کروی، کهکشان‌های بیضوی و هالهٔ کهکشان‌ها یافت می‌شوند\u202b." +
                         "\n" +
@@ -10079,8 +10073,8 @@ fun Starlittle(){
                         "نشانگرهای مهمی از تاریخچهٔ ستاره‌ای و شیمیایی کهکشان. " +
                         "کوتوله‌های سفید نقش حیاتی در بررسی ابرنواخترهای نوع آی ای دارند. " +
                         "برخی از آن‌ها دارای سیارات بازمانده‌اند که از انفجارهای قبلی جان سالم به در برده‌اند\u202b."
-                    )
-                    val textmortabet =
+                )
+                val textmortabet =
                     listOf("خورشیدی", "پرنور و مشهور", "غول و ابرغول", "نوترونی و انفجاری", "متغیر و خاص", "مناطق ستاره زایی", "اصول نظری")
                 val imagemortabet = listOf(
                     painterResource(R.drawable.sun),
